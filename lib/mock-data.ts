@@ -1,0 +1,420 @@
+import type { User, Table, MenuItem, Ingredient, Recipe, Customer, Reservation, Order } from "./types"
+
+export const DEMO_USERS: User[] = [
+  {
+    id: "u1",
+    nombre: "Admin Principal",
+    username: "admin",
+    password: "1234",
+    rol: "admin",
+    roles: ["admin"],
+    pin: "1234",
+    activo: true,
+    createdAt: new Date(),
+  },
+  {
+    id: "u2",
+    nombre: "Carlos Mesero",
+    username: "cmesero",
+    password: "2222",
+    rol: "mesero",
+    roles: ["mesero"],
+    pin: "2222",
+    activo: true,
+    createdAt: new Date(),
+  },
+  {
+    id: "u3",
+    nombre: "Ana Cocina",
+    username: "acocina",
+    password: "3333",
+    rol: "cocina",
+    roles: ["cocina"],
+    pin: "3333",
+    activo: true,
+    createdAt: new Date(),
+  },
+  {
+    id: "u4",
+    nombre: "Luis Caja",
+    username: "lcaja",
+    password: "4444",
+    rol: "caja",
+    roles: ["caja"],
+    pin: "4444",
+    activo: true,
+    createdAt: new Date(),
+  },
+  {
+    id: "u5",
+    nombre: "María Delivery",
+    username: "mdelivery",
+    password: "5555",
+    rol: "delivery",
+    roles: ["delivery"],
+    pin: "5555",
+    activo: true,
+    createdAt: new Date(),
+  },
+]
+
+export const DEMO_TABLES: Table[] = Array.from({ length: 8 }, (_, i) => ({
+  id: `t${i + 1}`,
+  numero: i + 1,
+  estado: "libre" as const,
+  capacidad: i < 4 ? 4 : 6,
+}))
+
+export const DEMO_MENU: MenuItem[] = [
+  {
+    id: "m1",
+    nombre: "Ceviche Clásico",
+    categoria: "Ceviches",
+    precioSalon: 35,
+    precioDelivery: 38,
+    descripcion: "Pescado del día, limón, cebolla morada, ají limo, culantro",
+    etiquetas: ["picante", "sin-gluten"],
+    disponible: true,
+    estacion: "frio",
+  },
+  {
+    id: "m2",
+    nombre: "Ceviche Mixto",
+    categoria: "Ceviches",
+    precioSalon: 42,
+    precioDelivery: 45,
+    descripcion: "Pescado, pulpo, calamar, langostinos, conchas negras",
+    etiquetas: ["picante"],
+    disponible: true,
+    estacion: "frio",
+  },
+  {
+    id: "m3",
+    nombre: "Causa de Pulpo",
+    categoria: "Entradas",
+    precioSalon: 28,
+    precioDelivery: 30,
+    descripcion: "Papa amarilla, pulpo al olivo, palta, huevo",
+    etiquetas: [],
+    disponible: true,
+    estacion: "frio",
+  },
+  {
+    id: "m4",
+    nombre: "Arroz con Mariscos",
+    categoria: "Arroces",
+    precioSalon: 38,
+    precioDelivery: 40,
+    descripcion: "Arroz, mariscos frescos, ají amarillo, culantro",
+    etiquetas: [],
+    disponible: true,
+    estacion: "plancha",
+  },
+  {
+    id: "m5",
+    nombre: "Jalea Mixta",
+    categoria: "Frituras",
+    precioSalon: 45,
+    precioDelivery: 48,
+    descripcion: "Pescado, calamar, langostinos, yuca frita, salsa criolla",
+    etiquetas: [],
+    disponible: true,
+    estacion: "fritura",
+  },
+  {
+    id: "m6",
+    nombre: "Chicharrón de Calamar",
+    categoria: "Frituras",
+    precioSalon: 32,
+    precioDelivery: 34,
+    descripcion: "Calamar tierno, salsa tártara, limón",
+    etiquetas: [],
+    disponible: true,
+    estacion: "fritura",
+  },
+  {
+    id: "m7",
+    nombre: "Chicha Morada",
+    categoria: "Bebidas",
+    precioSalon: 8,
+    precioDelivery: 10,
+    descripcion: "Tradicional bebida peruana",
+    etiquetas: ["sin-gluten"],
+    disponible: true,
+    estacion: "barra",
+  },
+  {
+    id: "m8",
+    nombre: "Suspiro Limeño",
+    categoria: "Postres",
+    precioSalon: 15,
+    precioDelivery: 16,
+    descripcion: "Manjar blanco, merengue italiano, canela",
+    etiquetas: [],
+    disponible: true,
+    estacion: "postres",
+  },
+]
+
+export const DEMO_INGREDIENTS: Ingredient[] = [
+  { id: "i1", nombre: "Pescado del día", stock: 15, unidad: "kg", minimo: 5, costo: 18 },
+  { id: "i2", nombre: "Limón", stock: 50, unidad: "kg", minimo: 10, costo: 3 },
+  { id: "i3", nombre: "Cebolla morada", stock: 20, unidad: "kg", minimo: 5, costo: 2.5 },
+  { id: "i4", nombre: "Ají limo", stock: 3, unidad: "kg", minimo: 1, costo: 12 },
+  { id: "i5", nombre: "Culantro", stock: 5, unidad: "atado", minimo: 2, costo: 1.5 },
+  { id: "i6", nombre: "Pulpo", stock: 8, unidad: "kg", minimo: 3, costo: 35 },
+  { id: "i7", nombre: "Calamar", stock: 10, unidad: "kg", minimo: 3, costo: 22 },
+  { id: "i8", nombre: "Langostinos", stock: 6, unidad: "kg", minimo: 2, costo: 45 },
+]
+
+export const DEMO_RECIPES: Recipe[] = [
+  {
+    id: "r1",
+    menuItemId: "m1",
+    ingredientes: [
+      { ingredienteId: "i1", cantidad: 0.25, unidad: "kg" },
+      { ingredienteId: "i2", cantidad: 0.1, unidad: "kg" },
+      { ingredienteId: "i3", cantidad: 0.05, unidad: "kg" },
+      { ingredienteId: "i4", cantidad: 0.01, unidad: "kg" },
+      { ingredienteId: "i5", cantidad: 0.02, unidad: "atado" },
+    ],
+    rendimiento: 1,
+    merma: 0.05,
+  },
+]
+
+export const DEMO_CUSTOMERS: Customer[] = [
+  {
+    id: "c1",
+    nombre: "Juan Pérez",
+    name: "Juan Pérez",
+    celular: "987654321",
+    phone: "+51 987 654 321",
+    dni: "12345678",
+    email: "juan.perez@email.com",
+    address: "Av. Larco 1234, Miraflores",
+    direccion: "Av. Larco 1234, Miraflores",
+    preferences: "Sin cebolla, prefiere picante moderado",
+    favoritos: ["m1", "m4"],
+    totalVisitas: 12,
+    ticketPromedio: 85,
+    rating: 5,
+    createdAt: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000), // 6 months ago
+  },
+  {
+    id: "c2",
+    nombre: "María García",
+    name: "María García",
+    celular: "987654322",
+    phone: "+51 987 654 322",
+    email: "maria.garcia@email.com",
+    address: "Calle Los Pinos 567, San Isidro",
+    direccion: "Calle Los Pinos 567, San Isidro",
+    preferences: "Alérgica a mariscos, prefiere pescado",
+    favoritos: ["m1", "m3"],
+    totalVisitas: 8,
+    ticketPromedio: 120,
+    rating: 4,
+    createdAt: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000), // 4 months ago
+  },
+  {
+    id: "c3",
+    nombre: "Carlos Rodríguez",
+    name: "Carlos Rodríguez",
+    celular: "987654323",
+    phone: "+51 987 654 323",
+    email: "carlos.r@email.com",
+    address: "Jr. Independencia 890, Barranco",
+    direccion: "Jr. Independencia 890, Barranco",
+    favoritos: ["m2", "m5", "m6"],
+    totalVisitas: 15,
+    ticketPromedio: 95,
+    rating: 5,
+    createdAt: new Date(Date.now() - 240 * 24 * 60 * 60 * 1000), // 8 months ago
+  },
+  {
+    id: "c4",
+    nombre: "Ana Martínez",
+    name: "Ana Martínez",
+    celular: "987654324",
+    phone: "+51 987 654 324",
+    email: "ana.martinez@email.com",
+    address: "Av. Benavides 2345, Surco",
+    direccion: "Av. Benavides 2345, Surco",
+    preferences: "Vegetariana, sin productos del mar",
+    favoritos: ["m3", "m8"],
+    totalVisitas: 5,
+    ticketPromedio: 65,
+    rating: 4,
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000), // 2 months ago
+  },
+  {
+    id: "c5",
+    nombre: "Roberto Silva",
+    name: "Roberto Silva",
+    celular: "987654325",
+    phone: "+51 987 654 325",
+    email: "roberto.silva@email.com",
+    address: "Calle Las Flores 456, La Molina",
+    direccion: "Calle Las Flores 456, La Molina",
+    preferences: "Cliente VIP, prefiere mesa junto a la ventana",
+    favoritos: ["m2", "m4", "m5"],
+    totalVisitas: 25,
+    ticketPromedio: 150,
+    rating: 5,
+    createdAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000), // 1 year ago
+  },
+]
+
+export const DEMO_ORDERS: Order[] = [
+  {
+    id: "ord1",
+    tipo: "delivery",
+    type: "delivery",
+    clienteId: "c1",
+    customerId: "c1",
+    items: [
+      {
+        id: "oi1",
+        menuItemId: "m1",
+        name: "Ceviche Clásico",
+        price: 38,
+        cantidad: 2,
+        quantity: 2,
+        modificadores: [],
+        notas: "",
+        estacion: "frio",
+        estado: "listo",
+      },
+      {
+        id: "oi2",
+        menuItemId: "m7",
+        name: "Chicha Morada",
+        price: 10,
+        cantidad: 2,
+        quantity: 2,
+        modificadores: [],
+        notas: "",
+        estacion: "barra",
+        estado: "listo",
+      },
+    ],
+    subtotal: 96,
+    igv: 17.28,
+    propina: 0,
+    total: 113.28,
+    estado: "listo",
+    status: "delivering",
+    deliveryAddress: "Av. Larco 1234, Miraflores",
+    deliveryPhone: "+51 987 654 321",
+    deliveryZone: "Miraflores",
+    deliveryFee: 8,
+    createdAt: new Date(Date.now() - 30 * 60 * 1000), // 30 min ago
+    updatedAt: new Date(Date.now() - 10 * 60 * 1000),
+  },
+  {
+    id: "ord2",
+    tipo: "delivery",
+    type: "delivery",
+    clienteId: "c2",
+    customerId: "c2",
+    items: [
+      {
+        id: "oi3",
+        menuItemId: "m3",
+        name: "Causa de Pulpo",
+        price: 30,
+        cantidad: 1,
+        quantity: 1,
+        modificadores: [],
+        notas: "",
+        estacion: "frio",
+        estado: "listo",
+      },
+    ],
+    subtotal: 30,
+    igv: 5.4,
+    propina: 0,
+    total: 43.4,
+    estado: "listo",
+    status: "completed",
+    deliveryAddress: "Calle Los Pinos 567, San Isidro",
+    deliveryPhone: "+51 987 654 322",
+    deliveryZone: "San Isidro",
+    deliveryFee: 8,
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+    updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 60 * 60 * 1000),
+  },
+  {
+    id: "ord3",
+    tipo: "mesa",
+    type: "salon",
+    mesaId: "t3",
+    tableId: "t3",
+    clienteId: "c3",
+    customerId: "c3",
+    items: [
+      {
+        id: "oi4",
+        menuItemId: "m2",
+        name: "Ceviche Mixto",
+        price: 42,
+        cantidad: 1,
+        quantity: 1,
+        modificadores: [],
+        notas: "",
+        estacion: "frio",
+        estado: "servido",
+      },
+      {
+        id: "oi5",
+        menuItemId: "m5",
+        name: "Jalea Mixta",
+        price: 45,
+        cantidad: 1,
+        quantity: 1,
+        modificadores: [],
+        notas: "",
+        estacion: "fritura",
+        estado: "servido",
+      },
+    ],
+    subtotal: 87,
+    igv: 15.66,
+    propina: 10,
+    total: 112.66,
+    estado: "servido",
+    status: "completed",
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+    updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000 + 90 * 60 * 1000),
+  },
+]
+
+export const DEMO_RESERVATIONS: Reservation[] = [
+  {
+    id: "res1",
+    clienteNombre: "Pedro Sánchez",
+    clienteCelular: "987654323",
+    fecha: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours from now
+    personas: 4,
+    estado: "confirmada",
+    createdAt: new Date(),
+  },
+]
+
+export function initializeMockData() {
+  if (typeof window === "undefined") return
+
+  const hasData = localStorage.getItem("dstephano-initialized")
+  if (hasData) return
+
+  localStorage.setItem("dstephano-users", JSON.stringify(DEMO_USERS))
+  localStorage.setItem("dstephano-tables", JSON.stringify(DEMO_TABLES))
+  localStorage.setItem("dstephano-menu", JSON.stringify(DEMO_MENU))
+  localStorage.setItem("dstephano-ingredients", JSON.stringify(DEMO_INGREDIENTS))
+  localStorage.setItem("dstephano-recipes", JSON.stringify(DEMO_RECIPES))
+  localStorage.setItem("dstephano-customers", JSON.stringify(DEMO_CUSTOMERS))
+  localStorage.setItem("dstephano-reservations", JSON.stringify(DEMO_RESERVATIONS))
+  localStorage.setItem("dstephano-orders", JSON.stringify(DEMO_ORDERS))
+  localStorage.setItem("dstephano-initialized", "true")
+}
