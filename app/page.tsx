@@ -1,12 +1,16 @@
+// app/page.tsx
+
 "use client"
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/lib/store"
 import { initializeMockData } from "@/lib/mock-data"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+// Quitamos los imports de Card, ya no los necesitamos aquí
 import { User, ChefHat, CreditCard, Truck, ShieldCheck, UtensilsCrossed } from "lucide-react"
+
+// 1. <-- ¡IMPORTAMOS NUESTRO NUEVO COMPONENTE DEL UI KIT!
+import { RoleCard } from "@/components/RoleCard"
 
 const ROLES = [
   {
@@ -89,30 +93,22 @@ export default function LoginPage() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-semibold mb-8 text-center">Selecciona tu rol para continuar</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ROLES.map((role) => {
-              const Icon = role.icon
-              return (
-                <Card
-                  key={role.id}
-                  className="hover:border-primary cursor-pointer transition-all hover:shadow-lg"
-                  onClick={() => handleRoleSelect(role.id)}
-                >
-                  <CardHeader>
-                    <div className="flex items-center gap-3 mb-2">
-                      <Icon className={`h-8 w-8 ${role.color}`} />
-                      <CardTitle>{role.nombre}</CardTitle>
-                    </div>
-                    <CardDescription>{role.descripcion}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button className="w-full bg-transparent" variant="outline">
-                      Acceder como {role.nombre}
-                    </Button>
-                  </CardContent>
-                </Card>
-              )
-            })}
+          {/* 2. <-- ¡ARREGLAMOS EL PROBLEMA DEL SCROLL! */}
+          {/* Cambiamos 'lg:grid-cols-3' por 'lg:grid-cols-2' para que se vean todos. */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+            
+            {/* 3. <-- ¡USAMOS NUESTRO NUEVO COMPONENTE! */}
+            {/* Reemplazamos todo el código de la tarjeta por una sola línea */}
+            {ROLES.map((role) => (
+              <RoleCard
+                key={role.id}
+                title={role.nombre}
+                description={role.descripcion}
+                icon={role.icon}
+                color={role.color}
+                onClick={() => handleRoleSelect(role.id)}
+              />
+            ))}
           </div>
 
           <div className="mt-12 text-center text-sm text-muted-foreground">
