@@ -35,7 +35,7 @@ export function TableStatusDialog({ open, onOpenChange, table, onUpdateStatus }:
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[90vw] sm:max-w-md w-full z-[90]">
+      <DialogContent className="max-w-[90vw] sm:max-w-md w-full z-90">
         <DialogHeader>
           <DialogTitle className="text-base sm:text-lg">Cambiar Estado - Mesa #{table?.numero}</DialogTitle>
         </DialogHeader>

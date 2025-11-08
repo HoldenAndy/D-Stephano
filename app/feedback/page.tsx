@@ -36,7 +36,7 @@ export default function FeedbackPage() {
         satisfaccion,
         recomendacion,
         comentario,
-        rol: currentRole || "desconocido",
+        rol: currentRole || "cliente",
       })
 
       toast.success("¡Gracias por tu feedback! Tu opinión nos ayuda a mejorar.")
@@ -51,7 +51,7 @@ export default function FeedbackPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-white">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white">
         <div className="container mx-auto px-4 h-16 flex items-center">
@@ -65,7 +65,7 @@ export default function FeedbackPage() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         <Card className="shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-t-lg">
+          <CardHeader className="bg-linear-to-r from-blue-600 to-teal-600 text-white rounded-t-lg">
             <CardTitle className="text-3xl">Cuéntanos tu Experiencia</CardTitle>
             <p className="text-blue-100 mt-2">Tu opinión es muy importante para nosotros</p>
           </CardHeader>
@@ -152,7 +152,7 @@ export default function FeedbackPage() {
               <Button
                 onClick={handleSubmit}
                 disabled={isSubmitting || satisfaccion === null || recomendacion === null || comentario.trim() === ""}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700"
+                className="flex-1 bg-linear-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700"
               >
                 {isSubmitting ? "Enviando..." : "Enviar Feedback"}
               </Button>

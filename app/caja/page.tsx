@@ -88,8 +88,7 @@ export default function CajaPage() {
   const totalVentas = orders.reduce((sum, o) => sum + o.total, 0)
 
   return (
-    <AppShell
-      title="Punto de Venta"
+    <AppShell title="Punto de Venta"hideBackButton={true}
       actions={
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => router.push("/feedback")} className="bg-transparent">

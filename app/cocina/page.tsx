@@ -82,7 +82,7 @@ export default function CocinaPage() {
 
   return (
     <AppShell
-      title="Kitchen Display System"
+      title="Kitchen Display System"hideBackButton={true}
       actions={
         <div className="flex items-center gap-3">
           <Button variant="outline" size="sm" onClick={() => router.push("/feedback")} className="bg-transparent">
@@ -104,7 +104,7 @@ export default function CocinaPage() {
       <div className="space-y-4">
         {/* Station Filter */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2">
-          <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+          <Filter className="h-4 w-4 text-muted-foreground shrink-0" />
           <Button
             variant={selectedStation === "all" ? "default" : "outline"}
             size="sm"

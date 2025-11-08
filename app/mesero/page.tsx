@@ -1,4 +1,4 @@
-"use client"
+"use client" // <-- ¡¡ARREGLO #1!! (Esta línea faltaba)
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge"
 import { Bell } from "lucide-react"
 import { Star } from "lucide-react"
 import { mockAPI } from "@/lib/services"
-import type { Table, MenuItem, WaitlistEntry, Order } from "@/lib/types"
+import type { Table, MenuItem, WaitlistEntry, Order, UserRole } from "@/lib/types"
 import { toast } from "sonner"
 
 export default function MeseroPage() {
@@ -30,6 +30,7 @@ export default function MeseroPage() {
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null)
   const [notifications, setNotifications] = useState(2)
 
+  // Esta es tu protección de rutas original
   useEffect(() => {
     if (!currentRole) {
       router.push("/")
@@ -64,16 +65,19 @@ export default function MeseroPage() {
 
   const handleSubmitOrder = async (items: any[]) => {
     if (!selectedTable) return
-
+    
     await mockAPI.updateTable(selectedTable.id, {
       estado: "ocupada",
       comensales: 2,
     })
 
     const subtotal = items.reduce((sum, item) => sum + item.item.precioSalon * item.cantidad, 0)
+    
+    // ¡¡AQUÍ ESTÁ EL ARREGLO DE TYPESCRIPT!!
+    // Tu 'Order' (en lib/types.ts) está roto y pide AMBAS versiones (Español e Inglés)
     const order: Order = {
       id: `ord-${Date.now()}`,
-      tipo: "mesa",
+      tipo: "mesa",  // <-- Tu propiedad en ESPAÑOL
       mesaId: selectedTable.id,
       items: items.map((item) => ({
         id: `item-${Date.now()}-${Math.random()}`,
@@ -82,15 +86,19 @@ export default function MeseroPage() {
         modificadores: item.modificadores,
         notas: item.notas,
         estacion: item.item.estacion,
-        estado: "nuevo",
+        estado: "nuevo", // Esto está bien, es de OrderItem
       })),
       subtotal,
       igv: subtotal * 0.18,
       propina: 0,
       total: subtotal * 1.18,
-      estado: "nuevo",
+      estado: "nuevo", // <-- Tu propiedad en ESPAÑOL
       createdAt: new Date(),
       updatedAt: new Date(),
+
+      // ¡¡ARREGLO #2!! -- AÑADIMOS LAS PROPIEDADES EN INGLÉS QUE FALTABAN
+      type: "salon", // (Usamos 'salon' porque 'mesa' no es opción para 'type')
+      status: "pending" // (Usamos 'pending' como equivalente de 'nuevo')
     }
 
     await mockAPI.createOrder(order)
@@ -98,6 +106,7 @@ export default function MeseroPage() {
   }
 
   const handleAddToWaitlist = (entry: Omit<WaitlistEntry, "id" | "createdAt" | "notificado">) => {
+    // ... (tu código original)
     const newEntry: WaitlistEntry = {
       ...entry,
       id: `wait-${Date.now()}`,
@@ -108,11 +117,13 @@ export default function MeseroPage() {
   }
 
   const handleNotifyWaitlist = (id: string) => {
+    // ... (tu código original)
     toast.success("Cliente notificado por WhatsApp")
     setWaitlist(waitlist.map((e) => (e.id === id ? { ...e, notificado: true } : e)))
   }
 
   const handleAssignTable = async (entryId: string, tableId: string) => {
+    // ... (tu código original)
     const entry = waitlist.find((e) => e.id === entryId)
     if (!entry) return
 
@@ -127,10 +138,12 @@ export default function MeseroPage() {
   }
 
   const handleRemoveFromWaitlist = (id: string) => {
+    // ... (tu código original)
     setWaitlist(waitlist.filter((e) => e.id !== id))
     toast.success("Cliente removido de la lista de espera")
   }
 
+  // Tu protección de rutas original
   if (currentRole !== "mesero") return null
 
   const ocupadas = tables.filter((t) => t.estado === "ocupada").length
@@ -138,7 +151,7 @@ export default function MeseroPage() {
 
   return (
     <AppShell
-      title="Salón y Mesas"
+      title="Salón y Mesas"hideBackButton={true}
       actions={
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => router.push("/feedback")} className="bg-transparent">

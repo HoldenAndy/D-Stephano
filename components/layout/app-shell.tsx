@@ -12,9 +12,15 @@ interface AppShellProps {
   children: React.ReactNode
   title: string
   actions?: React.ReactNode
+  hideBackButton?: boolean // <-- 1. AÑADIMOS LA NUEVA PROP (OPCIONAL)
 }
 
-export function AppShell({ children, title, actions }: AppShellProps) {
+export function AppShell({ 
+  children, 
+  title, 
+  actions, 
+  hideBackButton = false // <-- 2. LA USAMOS AQUÍ (por defecto no se oculta)
+}: AppShellProps) {
   const router = useRouter()
   const { currentRole, logout } = useAuthStore()
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -37,9 +43,15 @@ export function AppShell({ children, title, actions }: AppShellProps) {
             <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
               <Menu className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={handleGoBack} title="Volver atrás" className="hover:bg-accent">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
+            
+            {/* 3. ¡AQUÍ ESTÁ LA MAGIA! (Renderizado condicional) */}
+            {/* Si hideBackButton es 'true', este botón no se renderiza */}
+            {!hideBackButton && (
+              <Button variant="ghost" size="icon" onClick={handleGoBack} title="Volver atrás" className="hover:bg-accent">
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+            )}
+
             <h1 className="text-xl font-semibold">{title}</h1>
           </div>
 

@@ -78,7 +78,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Hero Section with Ocean Wave */}
-      <div className="relative h-[40vh] bg-gradient-to-b from-muted to-background overflow-hidden">
+      <div className="relative h-[40vh] bg-linear-to-b from-muted to-background overflow-hidden">
         <div className="absolute inset-0 bg-[url('/ocean-underwater.jpg')] bg-cover bg-center opacity-40" />
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
           <h1 className="text-5xl font-bold mb-4 text-balance">D'Stephano</h1>

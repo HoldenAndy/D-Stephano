@@ -63,7 +63,7 @@ export default function DeliveryPage() {
 
   return (
     <AppShell
-      title="Gestión de Delivery"
+      title="Gestión de Delivery"hideBackButton={true}
       actions={
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => router.push("/feedback")} className="bg-transparent">
