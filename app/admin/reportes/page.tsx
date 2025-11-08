@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/lib/store"
 import { AppShell } from "@/components/layout/app-shell"
+import { ReportDisplayCard } from "@/components/ReportDisplayCard"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -74,54 +75,30 @@ export default function ReportesPage() {
       <div className="space-y-6">
         {/* KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <DollarSign className="h-4 w-4" />
-                Ventas Semana
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">S/ {totalVentas.toLocaleString()}</div>
-              <p className="text-sm text-green-500 mt-1">+15% vs semana anterior</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <TrendingUp className="h-4 w-4" />
-                Ticket Promedio
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">S/ {ticketPromedio.toFixed(2)}</div>
-              <p className="text-sm text-green-500 mt-1">+8% vs semana anterior</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Users className="h-4 w-4" />
-                Clientes Atendidos
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">85</div>
-              <p className="text-sm text-muted-foreground mt-1">Esta semana</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Package className="h-4 w-4" />
-                Platos Vendidos
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">168</div>
-              <p className="text-sm text-muted-foreground mt-1">Esta semana</p>
-            </CardContent>
-          </Card>
+          <ReportDisplayCard
+            icon={<DollarSign className="h-5 w-5 text-sky-500" />}
+            title="Ventas Semana"
+            value={`S/ ${totalVentas.toLocaleString()}`}
+            description={<span className="text-green-500">+15% vs semana anterior</span>}
+          />
+          <ReportDisplayCard
+            icon={<TrendingUp className="h-5 w-5 text-emerald-500" />}
+            title="Ticket Promedio"
+            value={`S/ ${ticketPromedio.toFixed(2)}`}
+            description={<span className="text-green-500">+8% vs semana anterior</span>}
+          />
+          <ReportDisplayCard
+            icon={<Users className="h-5 w-5 text-violet-500" />}
+            title="Clientes Atendidos"
+            value={"85"}
+            description={<span className="text-muted-foreground">Esta semana</span>}
+          />
+          <ReportDisplayCard
+            icon={<Package className="h-5 w-5 text-yellow-500" />}
+            title="Platos Vendidos"
+            value={"168"}
+            description={<span className="text-muted-foreground">Esta semana</span>}
+          />
         </div>
 
         {/* Tabs */}
@@ -172,7 +149,7 @@ export default function ReportesPage() {
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
-                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                        label={({ name, percent }) => `${name} ${((percent as number) * 100).toFixed(0)}%`}
                       >
                         {ventasPorCategoria.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
