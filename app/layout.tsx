@@ -23,24 +23,17 @@ export const metadata: Metadata = {
   generator: 'v0.app'
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }) {
   return (
-    <html lang="es" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="font-sans antialiased">
-        {children}
-        <Toaster />
-
+    <html lang="es">
+      <body>
+        {/* Script de Contentsquare */}
         <Script 
-          id="contentsquare"
           src="https://t.contentsquare.net/uxa/4bb9cc536ee51.js" 
           strategy="afterInteractive" 
         />
-        {/* --- TERMINA NUEVO SCRIPT DE CONTENTSQUARE --- */}
-
+        
+        {children}
       </body>
     </html>
   )
